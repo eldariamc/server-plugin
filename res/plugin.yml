@@ -1,0 +1,30 @@
+name: EldariaCommons
+version: 1.0.0
+description: Fonctionnalites d Eldaria
+author: Dabsunter
+
+main: fr.dabsunter.eldaria.commons.Main
+
+commands:
+  newsset:
+    description: Definir le message d acceuil
+    aliases: [definir-la-news-d-acceuil-de-ses-morts, ns, newset]
+    permission: eldaria.setnews
+  mutechat:
+    description: Mute le chat
+    aliases: [unmutechat]
+    permission: eldaria.mute.command
+    usage: /<command>
+  announce:
+    description: Annoncer en haut de l ecran
+    permission: eldaria.announce
+    usage: /<command> <duration> <message>
+
+
+permissions:
+  eldaria.setnews:
+    default: op
+  eldaria.mute.command:
+    default: op
+  eldaria.mute.chat:
+    default: op

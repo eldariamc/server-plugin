@@ -1,0 +1,17 @@
+news:
+  format: "&7[&c/!&7] {MESSAGE} &7[&c/!&7]"
+  message: test
+
+mute:
+  mute-format: "{PLAYER}"
+  unmute-format: "{PLAYER}"
+spawn:
+  minX: -385
+  maxX: 385
+  minZ: -385
+  maxZ: 385
+command-blacklist:
+  - pl
+  - plugins
+  - ?
+  - help
