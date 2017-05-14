@@ -3,6 +3,8 @@ package fr.dabsunter.eldaria.commons;
 import fr.dabsunter.eldaria.commons.commands.AnnounceCommand;
 import fr.dabsunter.eldaria.commons.commands.MuteChatCommand;
 import fr.dabsunter.eldaria.commons.commands.NewsSetCommand;
+import fr.dabsunter.eldaria.commons.modules.ExplorationBootsRunnable;
+import fr.dabsunter.eldaria.commons.modules.FullEldariumRunnable;
 import fr.dabsunter.eldaria.commons.network.CustomPacketHandler;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
@@ -20,6 +22,7 @@ public class Main extends JavaPlugin {
 		getServer().getPluginManager().registerEvents(new EventListener(this), this);
 
 		getServer().getScheduler().runTaskTimer(this, new ExplorationBootsRunnable(this), 10L, 10L);
+		getServer().getScheduler().runTaskTimer(this, new FullEldariumRunnable(this), 10L, 10L);
 
 		getCommand("newsset").setExecutor(new NewsSetCommand(this));
 		getCommand("mutechat").setExecutor(new MuteChatCommand(this));
