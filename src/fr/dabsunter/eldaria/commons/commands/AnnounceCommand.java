@@ -6,7 +6,6 @@ import fr.dabsunter.eldaria.commons.network.packets.AnnouncePacket;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
 
 /**
  * Created by David on 10/04/2017.
@@ -33,8 +32,7 @@ public class AnnounceCommand extends AbstractCommand {
 		String message = ChatColor.translateAlternateColorCodes('&', join(args, 1));
 
 		AnnouncePacket packet = new AnnouncePacket(message, duration);
-		for (Player player : plugin.getServer().getOnlinePlayers())
-			CustomPacketHandler.dispatch(player, packet);
+		CustomPacketHandler.dispatch(packet, plugin.getServer().getOnlinePlayers());
 		return true;
 	}
 }

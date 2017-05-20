@@ -1,5 +1,6 @@
 package fr.dabsunter.eldaria.commons;
 
+import fr.dabsunter.eldaria.commons.commands.AnnounceBarCommand;
 import fr.dabsunter.eldaria.commons.commands.AnnounceCommand;
 import fr.dabsunter.eldaria.commons.commands.MuteChatCommand;
 import fr.dabsunter.eldaria.commons.commands.NewsSetCommand;
@@ -27,6 +28,7 @@ public class Main extends JavaPlugin {
 		getCommand("newsset").setExecutor(new NewsSetCommand(this));
 		getCommand("mutechat").setExecutor(new MuteChatCommand(this));
 		getCommand("announce").setExecutor(new AnnounceCommand(this));
+		getCommand("announcebar").setExecutor(new AnnounceBarCommand(this));
 
 		new CustomPacketHandler(this).register();
 	}

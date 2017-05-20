@@ -17,8 +17,14 @@ commands:
     usage: /<command>
   announce:
     description: Annoncer en haut de l ecran
+    aliases: [annonce]
     permission: eldaria.announce
     usage: /<command> <duration> <message>
+  announcebar:
+    description: Annoncer en bas de l ecran
+    aliases: [annoncebar]
+    permission: eldaria.announce
+    usage: /<command> [-duration=<duration>] [-rainbow] <message>
 
 
 permissions:
@@ -27,4 +33,6 @@ permissions:
   eldaria.mute.command:
     default: op
   eldaria.mute.chat:
+    default: op
+  eldaria.announce:
     default: op

@@ -4,10 +4,13 @@ import com.google.common.io.ByteArrayDataInput;
 import com.google.common.io.ByteArrayDataOutput;
 import com.google.common.io.ByteStreams;
 import fr.dabsunter.eldaria.commons.Main;
+import fr.dabsunter.eldaria.commons.network.packets.ActionBarPacket;
 import fr.dabsunter.eldaria.commons.network.packets.AnnouncePacket;
 import fr.dabsunter.eldaria.commons.network.packets.AuthPacket;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.messaging.PluginMessageListener;
+
+import java.util.Arrays;
 
 /**
  * Created by David on 10/04/2017.
@@ -16,7 +19,8 @@ public class CustomPacketHandler implements PluginMessageListener {
 	private static final String CHANNEL = "EldariaClient";
 	private static final Class<? extends CustomPacket>[] PACKETS = new Class[]{
 			AuthPacket.class,
-			AnnouncePacket.class
+			AnnouncePacket.class,
+			ActionBarPacket.class
 	};
 
 	private static Main plugin;
@@ -44,11 +48,16 @@ public class CustomPacketHandler implements PluginMessageListener {
 		}
 	}
 
-	public static void dispatch(Player player, CustomPacket packet) {
+	public static void dispatch(CustomPacket packet, Player... players) {
+		dispatch(packet, Arrays.asList(players));
+	}
+
+	public static void dispatch(CustomPacket packet, Iterable<? extends Player> players) {
 		ByteArrayDataOutput out = ByteStreams.newDataOutput();
 		out.writeByte(packet.id);
 		packet.write(out);
-		player.sendPluginMessage(plugin, CHANNEL, out.toByteArray());
-		System.out.println("Sended " + CHANNEL + " packet to " + player.getName());
+		byte[] rawOut = out.toByteArray();
+		for (Player p : players)
+			p.sendPluginMessage(plugin, CHANNEL, rawOut);
 	}
 }
