@@ -1,6 +1,7 @@
 package fr.dabsunter.eldaria.commons;
 
 import fr.dabsunter.eldaria.commons.modules.LuckyOre;
+import fr.dabsunter.eldaria.commons.modules.UnclaimFinder;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.World;
@@ -44,6 +45,10 @@ public class EventListener implements Listener {
 
 	@EventHandler
 	public void onPlayerInteract(PlayerInteractEvent event) {
+		if (event.getMaterial() == Material.UNCLAIM_FINDER)
+			UnclaimFinder.find(event.getPlayer());
+
+		//TODO: nouveau système d'orbe de réparation
 		boolean isFullRepair = event.getMaterial() == Material.DIVINE_ORB;
 		if (event.getAction().name().startsWith("RIGHT_CLICK")
 				&& (event.getMaterial() == Material.REPAIR_ORB || isFullRepair)) {
@@ -78,7 +83,7 @@ public class EventListener implements Listener {
 	public void onChat(AsyncPlayerChatEvent event) {
 		Player player = event.getPlayer();
 		if (plugin.isMuted && !player.isOp() && player.hasPermission("eldaria.mute.chat")) {
-			player.sendMessage(ChatColor.RED + "Vous ne pouvez parler lorque le chat est mute.");
+			player.sendMessage(ChatColor.RED + "Vous ne pouvez parler lorsque le chat est mute.");
 			event.setCancelled(true);
 		}
 	}
