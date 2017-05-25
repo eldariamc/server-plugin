@@ -17,11 +17,9 @@ public class LuckyOre {
 
 	public static void load(ConfigurationSection config) {
 		ORES.clear();
-		for (String key : config.getKeys(false)) {
-			ConfigurationSection section = config.getConfigurationSection(key);
-			ORES.add(new LuckEntry(section.getString("ore", "0"), section.getFloat("probability", 0.0F)));
-		}
-		ORES.add(new LuckEntry("stone", 1.0F));
+		for (String key : config.getKeys(false))
+			ORES.add(new LuckEntry(key, config.getFloat(key, 0.0F)));
+		ORES.add(new LuckEntry("1", 1.0F));
 	}
 
 	public static Material pick() {

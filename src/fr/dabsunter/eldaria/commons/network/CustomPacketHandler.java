@@ -9,8 +9,7 @@ import fr.dabsunter.eldaria.commons.network.packets.AnnouncePacket;
 import fr.dabsunter.eldaria.commons.network.packets.AuthPacket;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.messaging.PluginMessageListener;
-
-import java.util.Arrays;
+import org.bukkit.plugin.messaging.PluginMessageRecipient;
 
 /**
  * Created by David on 10/04/2017.
@@ -48,16 +47,22 @@ public class CustomPacketHandler implements PluginMessageListener {
 		}
 	}
 
-	public static void dispatch(CustomPacket packet, Player... players) {
-		dispatch(packet, Arrays.asList(players));
+	public static void dispatch(CustomPacket packet, PluginMessageRecipient... recipients) {
+		byte[] out = toByteArray(packet);
+		for (PluginMessageRecipient p : recipients)
+			p.sendPluginMessage(plugin, CHANNEL, out);
 	}
 
-	public static void dispatch(CustomPacket packet, Iterable<? extends Player> players) {
+	public static void dispatch(CustomPacket packet, Iterable<? extends PluginMessageRecipient> recipients) {
+		byte[] out = toByteArray(packet);
+		for (PluginMessageRecipient p : recipients)
+			p.sendPluginMessage(plugin, CHANNEL, out);
+	}
+
+	private static byte[] toByteArray(CustomPacket packet) {
 		ByteArrayDataOutput out = ByteStreams.newDataOutput();
 		out.writeByte(packet.id);
 		packet.write(out);
-		byte[] rawOut = out.toByteArray();
-		for (Player p : players)
-			p.sendPluginMessage(plugin, CHANNEL, rawOut);
+		return out.toByteArray();
 	}
 }

@@ -15,3 +15,20 @@ command-blacklist:
   - plugins
   - ?
   - help
+
+lucky-ore:
+  gold-ore: 0.0
+  iron-ore: 0.0
+  coal-ore: 0.0
+  lapis-ore: 0.0
+  diamond-ore: 0.0
+  redstone-ore: 0.0
+  emerald-ore: 0.0
+  quartz-ore: 0.0
+  lignite-ore: 0.0
+  zinc-ore: 0.0
+  cronyxe-ore: 0.0
+  kobalt-ore: 0.0
+  eldarium-ore: 0.0
+  gemme-ore: 0.0
+  xp-ore: 0.0

@@ -6,6 +6,7 @@ import fr.dabsunter.eldaria.commons.commands.MuteChatCommand;
 import fr.dabsunter.eldaria.commons.commands.NewsSetCommand;
 import fr.dabsunter.eldaria.commons.modules.ExplorationBootsRunnable;
 import fr.dabsunter.eldaria.commons.modules.FullEldariumRunnable;
+import fr.dabsunter.eldaria.commons.modules.LuckyOre;
 import fr.dabsunter.eldaria.commons.network.CustomPacketHandler;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
@@ -31,6 +32,8 @@ public class Main extends JavaPlugin {
 		getCommand("announcebar").setExecutor(new AnnounceBarCommand(this));
 
 		new CustomPacketHandler(this).register();
+
+		LuckyOre.load(getConfig().getConfigurationSection("lucky-ore"));
 	}
 
 	public void sendNews(CommandSender sender) {
