@@ -3,6 +3,7 @@ package fr.dabsunter.eldaria.commons.modules;
 import fr.dabsunter.eldaria.commons.network.CustomPacketHandler;
 import fr.dabsunter.eldaria.commons.network.packets.ActionBarPacket;
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
 
@@ -25,10 +26,24 @@ public class UnclaimFinder {
 		for (int y = 0; y < 256; y++)
 			for (int x = minX; x <= maxX; x++)
 				for (int z = minZ; z <= maxZ; z++)
-					if (world.getBlockAt(x, y, z).getType().name().endsWith("CHEST"))
+					if (isChest(world.getBlockAt(x, y, z).getType()))
 						chests++;
 
 		ActionBarPacket packet = new ActionBarPacket("Au moins " + chests + " coffres trouvés dans les environs", 200, true);
 		CustomPacketHandler.dispatch(packet, player);
+	}
+
+	private static boolean isChest(Material type) {
+		switch (type) {
+			case CRONYXE_CHEST:
+			case KOBALT_CHEST:
+			case MAGIC_CHEST:
+			case ZINC_CHEST:
+			case CHEST:
+			case TRAPPED_CHEST:
+				return true;
+			default:
+				return false;
+		}
 	}
 }
