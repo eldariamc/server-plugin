@@ -17,7 +17,6 @@ import org.bukkit.event.entity.EntityPortalEvent;
 import org.bukkit.event.player.*;
 import org.bukkit.event.world.PortalCreateEvent;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
@@ -48,7 +47,7 @@ public class EventListener implements Listener {
 		if (event.getMaterial() == Material.UNCLAIM_FINDER)
 			UnclaimFinder.find(event.getPlayer());
 
-		//TODO: nouveau système d'orbe de réparation
+		/* --- Ancien système d'orbe de réparation ---
 		boolean isFullRepair = event.getMaterial() == Material.DIVINE_ORB;
 		if (event.getAction().name().startsWith("RIGHT_CLICK")
 				&& (event.getMaterial() == Material.REPAIR_ORB || isFullRepair)) {
@@ -59,7 +58,7 @@ public class EventListener implements Listener {
 				for (ItemStack stack : pi.getContents())
 					repair(stack);
 			pi.setItemInHand(null);
-		}
+		}*/
 	}
 
 	private static void repair(ItemStack stack) {
