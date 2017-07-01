@@ -39,9 +39,8 @@ public class BossBarCommand extends AbstractCommand {
 				String arg = args[i];
 				if (arg.startsWith("-duration=")) {
 					duration = Integer.parseInt(arg.substring(10));
-				} else if (arg.equals("-progress=")) {
+				} else if (arg.startsWith("-progress=")) {
 					progress = Float.parseFloat(arg.substring(10));
-					progress = Math.max(progress, 0.0F);
 					progress = Math.min(progress, 1.0F);
 				} else {
 					break;
