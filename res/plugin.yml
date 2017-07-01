@@ -24,7 +24,11 @@ commands:
     description: Annoncer en bas de l ecran
     aliases: [annoncebar]
     permission: eldaria.announce
-    usage: /<command> [-duration=<duration>] [-rainbow] <message>
+    usage: /<command> <joueur>|@a [-duration=<duration>] [-rainbow] <message>
+  bossbar:
+    description: Annoncer dans la bossbar
+    permission: eldaria.announce
+    usage: /<command> <joueur>|@a [-duration=<duration>] [-progress=<progress>] <message>
 
 
 permissions:

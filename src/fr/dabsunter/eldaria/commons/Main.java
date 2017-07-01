@@ -1,9 +1,6 @@
 package fr.dabsunter.eldaria.commons;
 
-import fr.dabsunter.eldaria.commons.commands.AnnounceBarCommand;
-import fr.dabsunter.eldaria.commons.commands.AnnounceCommand;
-import fr.dabsunter.eldaria.commons.commands.MuteChatCommand;
-import fr.dabsunter.eldaria.commons.commands.NewsSetCommand;
+import fr.dabsunter.eldaria.commons.commands.*;
 import fr.dabsunter.eldaria.commons.modules.ExplorationBootsRunnable;
 import fr.dabsunter.eldaria.commons.modules.FullEldariumRunnable;
 import fr.dabsunter.eldaria.commons.modules.LuckyOre;
@@ -32,6 +29,7 @@ public class Main extends JavaPlugin {
 		getCommand("mutechat").setExecutor(new MuteChatCommand(this));
 		getCommand("announce").setExecutor(new AnnounceCommand(this));
 		getCommand("announcebar").setExecutor(new AnnounceBarCommand(this));
+		getCommand("bossbar").setExecutor(new BossBarCommand(this));
 
 		new CustomPacketHandler(this).register();
 

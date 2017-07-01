@@ -7,6 +7,7 @@ import fr.dabsunter.eldaria.commons.Main;
 import fr.dabsunter.eldaria.commons.network.packets.ActionBarPacket;
 import fr.dabsunter.eldaria.commons.network.packets.AnnouncePacket;
 import fr.dabsunter.eldaria.commons.network.packets.AuthPacket;
+import fr.dabsunter.eldaria.commons.network.packets.BossBarPacket;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.messaging.PluginMessageListener;
 import org.bukkit.plugin.messaging.PluginMessageRecipient;
@@ -19,7 +20,8 @@ public class CustomPacketHandler implements PluginMessageListener {
 	private static final Class<? extends CustomPacket>[] PACKETS = new Class[]{
 			AuthPacket.class,
 			AnnouncePacket.class,
-			ActionBarPacket.class
+			ActionBarPacket.class,
+			BossBarPacket.class
 	};
 
 	private static Main plugin;
