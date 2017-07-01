@@ -14,8 +14,8 @@ public class ExplorationBootsRunnable extends EffectRunnable {
 
 	public ExplorationBootsRunnable(Main plugin) {
 		super(plugin, "ExplorationBoots",
-				new PotionEffect(PotionEffectType.SPEED, 100, 1, true),
-				new PotionEffect(PotionEffectType.FEATHER_FALLING, 100, 0, true)
+				new PotionEffect(PotionEffectType.SPEED, 1000000, 1, true),
+				new PotionEffect(PotionEffectType.FEATHER_FALLING, 1000000, 0, true)
 		);
 	}
 
