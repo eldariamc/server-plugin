@@ -31,7 +31,7 @@ public class BossBarCommand extends AbstractCommand {
 		}
 
 		int duration = 100;
-		float progress = 0.0F;
+		float progress = -1.0F;
 
 		int i = 1;
 		try {
