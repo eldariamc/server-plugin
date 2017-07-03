@@ -6,12 +6,13 @@ import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.Block;
+import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
-import org.bukkit.event.entity.EntityDamageEvent;
+import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityExplodeEvent;
 import org.bukkit.event.entity.EntityPortalEvent;
 import org.bukkit.event.player.*;
@@ -72,9 +73,16 @@ public class EventListener implements Listener {
 	}
 
 	@EventHandler
-	public void onEntityDamage(EntityDamageEvent event) {
-		if (event.getCause() == EntityDamageEvent.DamageCause.MAGIC) {
-			event.setDamage(event.getDamage(EntityDamageEvent.DamageModifier.BASE) / 5.5);
+	public void onEntityDamageByEntity(EntityDamageByEntityEvent event) {
+		if (!(event.getDamager() instanceof LivingEntity))
+			return;
+		LivingEntity damager = (LivingEntity) event.getDamager();
+		for (PotionEffect effect : damager.getActivePotionEffects()) {
+			if (effect.getType() == PotionEffectType.INCREASE_DAMAGE) {
+				int level = effect.getAmplifier() + 1;
+				event.setDamage(event.getFinalDamage() - level * 2);
+				break;
+			}
 		}
 	}
 
