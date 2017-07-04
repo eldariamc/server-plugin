@@ -13,8 +13,13 @@ public class AuthPacket extends CustomPacket {
 	private UUID uuid;
 	private String accessToken;
 
-	public AuthPacket(UUID uuid, String accessToken) {
+	public AuthPacket() {
 		super(0);
+	}
+
+	public AuthPacket(UUID uuid, String accessToken) {
+		this();
+
 		this.uuid = uuid;
 		this.accessToken = accessToken;
 	}
