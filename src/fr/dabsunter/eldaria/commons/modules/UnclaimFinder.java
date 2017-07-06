@@ -11,7 +11,7 @@ import org.bukkit.entity.Player;
  * Created by David on 20/05/2017.
  */
 public class UnclaimFinder {
-	private final static int REACH = 16;
+	private final static int REACH = 8;
 
 	public static void find(Player player) {
 		Location center = player.getLocation();
@@ -23,7 +23,7 @@ public class UnclaimFinder {
 
 		int chests = 0;
 
-		for (int y = 0; y < 256; y++)
+		for (int y = 0; y < world.getMaxHeight(); y++)
 			for (int x = minX; x <= maxX; x++)
 				for (int z = minZ; z <= maxZ; z++)
 					if (isChest(world.getBlockAt(x, y, z).getType()))
