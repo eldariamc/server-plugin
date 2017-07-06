@@ -38,11 +38,11 @@ public class RepairOrbRunnable implements Runnable {
 	public void run() {
 		for (Player player : Bukkit.getOnlinePlayers()) {
 
-			plugin.getLogger().info("player = " + player.getName());
+			//plugin.getLogger().info("player = " + player.getName());
 			PlayerInventory pi = player.getInventory();
 			ItemStack orb = pi.getOrb();
 
-			plugin.getLogger().info("orb = " + orb);
+			//plugin.getLogger().info("orb = " + orb);
 
 			if (orb == null || orb.getType() != Material.REPAIR_ORB && orb.getType() != Material.DIVINE_ORB)
 				continue;
@@ -50,7 +50,7 @@ public class RepairOrbRunnable implements Runnable {
 			int dura = orb.getType().getMaxDurability() - orb.getDurability();
 			dura = Math.min(repair, dura);
 
-			plugin.getLogger().info("dura = " + orb.getType().getMaxDurability() + " - " + orb.getDurability() + " = " + dura);
+			//plugin.getLogger().info("dura = " + orb.getType().getMaxDurability() + " - " + orb.getDurability() + " = " + dura);
 
 			List<ItemStack> stacks = new ArrayList<>(40);
 			for (int i = 0; i < 40; i++) {
@@ -64,8 +64,11 @@ public class RepairOrbRunnable implements Runnable {
 
 			int usedDura = 0;
 			int d = dura / stacks.size();
+			//plugin.getLogger().info("d = " + d);
 			for (int i = 0; i < stacks.size(); i++) {
+				//plugin.getLogger().info("stacks = " + stacks);
 				ItemStack stack = stacks.get(i);
+				//plugin.getLogger().info("stack dura = " + stack.getDurability());
 				if (stack.getDurability() < d) {
 					usedDura += stack.getDurability();
 					stack.setDurability((short) 0);
@@ -73,14 +76,18 @@ public class RepairOrbRunnable implements Runnable {
 					if (stacks.isEmpty())
 						break;
 					d = (dura - usedDura) / stacks.size();
-					i = 0;
+					//plugin.getLogger().info("d = " + d);
+					i = -1;
 				}
 			}
+			//plugin.getLogger().info("outstacks = " + stacks);
 
 			for (ItemStack stack : stacks) {
 				stack.setDurability((short) (stack.getDurability() - d));
 				usedDura += d;
 			}
+
+			//plugin.getLogger().info("usedDura = " + usedDura);
 
 			d = orb.getDurability() + usedDura;
 			if (d >= orb.getType().getMaxDurability())
