@@ -28,7 +28,7 @@ public class Main extends JavaPlugin {
 
 		getServer().getScheduler().runTaskTimer(this, new ExplorationBootsRunnable(this), 10L, 10L);
 		getServer().getScheduler().runTaskTimer(this, new FullEldariumRunnable(this), 10L, 10L);
-		new RepairOrbRunnable(getConfig().getConfigurationSection("repair-orb")).setup(this);
+		new RepairOrbRunnable(this, getConfig().getConfigurationSection("repair-orb")).setup();
 
 		getCommand("newsset").setExecutor(new NewsSetCommand(this));
 		getCommand("mutechat").setExecutor(new MuteChatCommand(this));

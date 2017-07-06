@@ -7,6 +7,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.plugin.Plugin;
+import org.bukkit.scheduler.BukkitTask;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,29 +16,41 @@ import java.util.List;
  * Created by David on 03/06/2017.
  */
 public class RepairOrbRunnable implements Runnable {
+	private final Plugin plugin;
+
 	private final int period;
 	private final int repair;
 
-	public  RepairOrbRunnable(ConfigurationSection config) {
+	public  RepairOrbRunnable(Plugin plugin, ConfigurationSection config) {
+		this.plugin = plugin;
 		this.period = config.getInt("period", 100);
+		plugin.getLogger().info("RepairOrb period: " + period);
 		this.repair = config.getInt("repair", 50);
+		plugin.getLogger().info("RepairOrb repair: " + repair);
 	}
 
-	public void setup(Plugin plugin) {
-		plugin.getServer().getScheduler().runTaskTimer(plugin, this, period, period);
+	public void setup() {
+		BukkitTask task = plugin.getServer().getScheduler().runTaskTimer(plugin, this, period, period);
+		plugin.getLogger().info("Started RepairOrb task: " + task);
 	}
 
 	@Override
 	public void run() {
 		for (Player player : Bukkit.getOnlinePlayers()) {
+
+			plugin.getLogger().info("player = " + player.getName());
 			PlayerInventory pi = player.getInventory();
 			ItemStack orb = pi.getOrb();
 
-			if (orb == null || orb.getType() != Material.REPAIR_ORB)
+			plugin.getLogger().info("orb = " + orb);
+
+			if (orb == null || orb.getType() != Material.REPAIR_ORB && orb.getType() != Material.DIVINE_ORB)
 				continue;
 
 			int dura = orb.getType().getMaxDurability() - orb.getDurability();
 			dura = Math.min(repair, dura);
+
+			plugin.getLogger().info("dura = " + orb.getType().getMaxDurability() + " - " + orb.getDurability() + " = " + dura);
 
 			List<ItemStack> stacks = new ArrayList<>(40);
 			for (int i = 0; i < 40; i++) {
