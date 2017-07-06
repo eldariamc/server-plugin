@@ -11,7 +11,7 @@ import org.bukkit.entity.Player;
  * Created by David on 20/05/2017.
  */
 public class UnclaimFinder {
-	private final static int REACH = 8;
+	private final static int REACH = 30;
 
 	public static void find(Player player) {
 		Location center = player.getLocation();
@@ -29,7 +29,7 @@ public class UnclaimFinder {
 					if (isChest(world.getBlockAt(x, y, z).getType()))
 						chests++;
 
-		ActionBarPacket packet = new ActionBarPacket("Au moins " + chests + " coffres trouvés dans les environs", 200, true);
+		ActionBarPacket packet = new ActionBarPacket("Il y a " + chests + " coffres trouvés dans les environs", 200, true);
 		CustomPacketHandler.dispatch(packet, player);
 	}
 

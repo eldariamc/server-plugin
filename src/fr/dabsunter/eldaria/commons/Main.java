@@ -18,6 +18,11 @@ public class Main extends JavaPlugin {
 	public boolean isMuted = false;
 
 	@Override
+	public void onLoad() {
+		saveDefaultConfig();
+	}
+
+	@Override
 	public void onEnable() {
 		getServer().getPluginManager().registerEvents(new EventListener(this), this);
 
