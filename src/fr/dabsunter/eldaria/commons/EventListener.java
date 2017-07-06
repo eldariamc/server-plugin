@@ -15,7 +15,10 @@ import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityExplodeEvent;
 import org.bukkit.event.entity.EntityPortalEvent;
-import org.bukkit.event.player.*;
+import org.bukkit.event.player.AsyncPlayerChatEvent;
+import org.bukkit.event.player.PlayerCommandPreprocessEvent;
+import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.world.PortalCreateEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffect;
@@ -29,12 +32,6 @@ public class EventListener implements Listener {
 
 	public EventListener(Main plugin) {
 		this.plugin = plugin;
-	}
-
-	@EventHandler
-	public void onItemConsume(PlayerItemConsumeEvent event) {
-		if (event.getItem().getType() == Material.COOKIE)
-			event.getPlayer().addPotionEffect(new PotionEffect(PotionEffectType.SPEED, 2400, 1), true);
 	}
 
 	@EventHandler
