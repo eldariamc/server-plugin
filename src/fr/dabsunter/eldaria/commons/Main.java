@@ -1,14 +1,17 @@
 package fr.dabsunter.eldaria.commons;
 
 import fr.dabsunter.eldaria.commons.commands.*;
-import fr.dabsunter.eldaria.commons.modules.ExplorationBootsRunnable;
-import fr.dabsunter.eldaria.commons.modules.FullEldariumRunnable;
-import fr.dabsunter.eldaria.commons.modules.LuckyOre;
-import fr.dabsunter.eldaria.commons.modules.RepairOrbRunnable;
+import fr.dabsunter.eldaria.commons.modules.*;
 import fr.dabsunter.eldaria.commons.network.CustomPacketHandler;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
+
+import java.io.File;
+import java.io.IOException;
+import java.util.logging.Level;
 
 /**
  * Created by David on 02/04/2017.
@@ -16,6 +19,9 @@ import org.bukkit.plugin.java.JavaPlugin;
 public class Main extends JavaPlugin {
 
 	public boolean isMuted = false;
+
+	private FileConfiguration ksConfig = null;
+	private File ksConfigFile = null;
 
 	@Override
 	public void onLoad() {
@@ -35,10 +41,49 @@ public class Main extends JavaPlugin {
 		getCommand("announce").setExecutor(new AnnounceCommand(this));
 		getCommand("announcebar").setExecutor(new AnnounceBarCommand(this));
 		getCommand("bossbar").setExecutor(new BossBarCommand(this));
+		getCommand("killstreak").setExecutor(new KillStreakCommand(this));
 
 		new CustomPacketHandler(this).register();
 
 		LuckyOre.load(getConfig().getConfigurationSection("lucky-ore"));
+		KillStreaks.load(getKsConfig());
+	}
+
+	@Override
+	public void onDisable() {
+		KillStreaks.save(getKsConfig());
+		saveKsConfig();
+	}
+
+	public FileConfiguration getKsConfig() {
+		if (ksConfig == null) {
+			reloadKsConfig();
+		}
+		return ksConfig;
+	}
+
+	@Override
+	public void reloadConfig() {
+		super.reloadConfig();
+		reloadKsConfig();
+	}
+
+	public void saveKsConfig() {
+		if (ksConfig == null || ksConfigFile == null) {
+			return;
+		}
+		try {
+			getKsConfig().save(ksConfigFile);
+		} catch (IOException ex) {
+			getLogger().log(Level.SEVERE, "Could not save config to " + ksConfigFile, ex);
+		}
+	}
+
+	public void reloadKsConfig() {
+		if (ksConfigFile == null) {
+			ksConfigFile = new File(getDataFolder(), "kill-streaks.yml");
+		}
+		ksConfig = YamlConfiguration.loadConfiguration(ksConfigFile);
 	}
 
 	public void sendNews(CommandSender sender) {

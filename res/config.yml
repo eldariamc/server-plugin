@@ -37,3 +37,9 @@ repair-orb:
   # en ticks
   period: 100
   repair: 50
+
+kill-streak-format:
+  - === Stats de {PLAYER} ===
+  - Kills : {KILLS}
+  - Morts : {DEATHS}
+  - Ratio : {RATIO}

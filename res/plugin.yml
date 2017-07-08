@@ -4,6 +4,7 @@ description: Fonctionnalites d Eldaria
 author: Dabsunter
 
 main: fr.dabsunter.eldaria.commons.Main
+depends: [Factions]
 
 commands:
   newsset:
@@ -29,6 +30,10 @@ commands:
     description: Annoncer dans la bossbar
     permission: eldaria.announce
     usage: /<command> <joueur>|@a [-duration=<duration>] [-progress=<progress>] <message>
+  killstreak:
+    description: Affiche les statistiques liées au kills du joueur
+    aliases: [ks]
+    usage: /<command> [joueur]
 
 
 permissions:

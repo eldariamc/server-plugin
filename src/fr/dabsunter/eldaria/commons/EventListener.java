@@ -1,7 +1,9 @@
 package fr.dabsunter.eldaria.commons;
 
+import fr.dabsunter.eldaria.commons.modules.KillStreaks;
 import fr.dabsunter.eldaria.commons.modules.LuckyOre;
 import fr.dabsunter.eldaria.commons.modules.UnclaimFinder;
+import net.minecraft.server.MathHelper;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.World;
@@ -15,16 +17,20 @@ import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityExplodeEvent;
 import org.bukkit.event.entity.EntityPortalEvent;
+import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.*;
 import org.bukkit.event.world.PortalCreateEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
+import java.util.Random;
+
 /**
  * Created by David on 02/04/2017.
  */
 public class EventListener implements Listener {
+	private static final Random XP_RAND = new Random("XpOre".hashCode() << 32 + "RandGen".hashCode());
 	private final Main plugin;
 
 	public EventListener(Main plugin) {
@@ -89,10 +95,19 @@ public class EventListener implements Listener {
 		for (PotionEffect effect : damager.getActivePotionEffects()) {
 			if (effect.getType() == PotionEffectType.INCREASE_DAMAGE) {
 				int level = effect.getAmplifier() + 1;
-				event.setDamage(event.getFinalDamage() - level * 2);
+				event.setDamage(event.getDamage() - level * 2.5);
 				break;
 			}
 		}
+	}
+
+	@EventHandler
+	public void onPlayerDeath(PlayerDeathEvent event) {
+		Player killed = event.getEntity();
+		KillStreaks.addDeath(killed);
+		Player killer = killed.getKiller();
+		if (killer != null)
+			KillStreaks.addKill(killer);
 	}
 
 	@EventHandler
@@ -140,9 +155,14 @@ public class EventListener implements Listener {
 	@EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
 	public void onBlockBreak(BlockBreakEvent event) {
 		Block block = event.getBlock();
-		if (block.getType() == Material.LUCKY_ORE) {
-			block.setTypeId(LuckyOre.pick().getId(), false);
-			event.setExpToDrop(block.getExpDrop(event.getPlayer()));
+		switch (block.getType()) {
+			case LUCKY_ORE:
+				block.setTypeId(LuckyOre.pick().getId(), false);
+				event.setExpToDrop(block.getExpDrop(event.getPlayer()));
+				break;
+			case XP_ORE:
+				event.setExpToDrop(MathHelper.nextInt(XP_RAND, 24, 48));
+				break;
 		}
 	}
 }

@@ -12,5 +12,6 @@
     <orderEntry type="module" module-name="paperspigot-api" scope="PROVIDED" />
     <orderEntry type="library" name="Maven: org.bukkit:minecraft-server:1.7.10" level="project" />
     <orderEntry type="library" name="Maven: com.google.guava:guava:10.0.1" level="project" />
+    <orderEntry type="module" module-name="Factions" />
   </component>
 </module>
