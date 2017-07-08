@@ -7,6 +7,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
@@ -51,6 +52,10 @@ public class Main extends JavaPlugin {
 
 	@Override
 	public void onDisable() {
+		// Ferme tout les inventaires avant un reload
+		for (Player player : getServer().getOnlinePlayers())
+			player.closeInventory();
+
 		KillStreaks.save(getKsConfig());
 		saveKsConfig();
 	}

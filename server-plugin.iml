@@ -13,5 +13,14 @@
     <orderEntry type="library" name="Maven: org.bukkit:minecraft-server:1.7.10" level="project" />
     <orderEntry type="library" name="Maven: com.google.guava:guava:10.0.1" level="project" />
     <orderEntry type="module" module-name="Factions" />
+    <orderEntry type="module-library">
+      <library>
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/../lib/ShopGUIPlus.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
   </component>
 </module>
