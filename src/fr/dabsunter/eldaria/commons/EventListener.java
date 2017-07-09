@@ -3,7 +3,6 @@ package fr.dabsunter.eldaria.commons;
 import fr.dabsunter.eldaria.commons.modules.KillStreaks;
 import fr.dabsunter.eldaria.commons.modules.LuckyOre;
 import fr.dabsunter.eldaria.commons.modules.UnclaimFinder;
-import net.minecraft.server.MathHelper;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.World;
@@ -25,6 +24,8 @@ import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
 import java.util.Random;
+
+import static fr.dabsunter.eldaria.commons.Utils.randInRange;
 
 /**
  * Created by David on 02/04/2017.
@@ -161,7 +162,7 @@ public class EventListener implements Listener {
 				event.setExpToDrop(block.getExpDrop(event.getPlayer()));
 				break;
 			case XP_ORE:
-				event.setExpToDrop(MathHelper.nextInt(XP_RAND, 24, 48));
+				event.setExpToDrop(randInRange(XP_RAND, 24, 48));
 				break;
 		}
 	}
