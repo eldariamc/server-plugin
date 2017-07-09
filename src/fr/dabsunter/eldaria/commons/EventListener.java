@@ -153,6 +153,7 @@ public class EventListener implements Listener {
 			event.setCancelled(true);
 	}
 
+	@SuppressWarnings({"deprecation"})
 	@EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
 	public void onBlockBreak(BlockBreakEvent event) {
 		Block block = event.getBlock();
