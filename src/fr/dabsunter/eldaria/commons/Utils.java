@@ -12,4 +12,11 @@ public class Utils {
 			throw new IllegalArgumentException("max: " + max + " < min: " + min);
 		return rng.nextInt(max - min + 1) + min;
 	}
+
+	public static boolean hasSomething(Object... things) {
+		for (Object o : things)
+			if (o != null)
+				return true;
+		return false;
+	}
 }

@@ -34,6 +34,10 @@ commands:
     description: Affiche les statistiques liées au kills du joueur
     aliases: [ks]
     usage: /<command> [joueur]
+  topkillstreak:
+    description: Affiche le top KillStreak
+    aliases: [topks]
+    usage: /<command> [joueur]
 
 
 permissions:

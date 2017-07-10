@@ -12,7 +12,7 @@ import java.util.Random;
 public class LuckyOre {
 
 	private static final ArrayList<LuckEntry> ORES = new ArrayList<>();
-	private static final Random RANDOM = new Random("LuckyOre".hashCode());
+	private static final Random RANDOM = new Random("LuckyOre".hashCode() << 32 + "RandomGen".hashCode());
 
 	public static void load(ConfigurationSection config) {
 		ORES.clear();

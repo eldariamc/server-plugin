@@ -3,9 +3,8 @@ package fr.dabsunter.eldaria.commons.modules;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.configuration.ConfigurationSection;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * Created by David on 07/07/2017.
@@ -13,6 +12,7 @@ import java.util.UUID;
 public class KillStreaks {
 
 	private static HashMap<UUID, KsProfile> profiles;
+	private static LinkedHashMap<UUID, KsProfile> sortedProfiles;
 
 	public static void load(ConfigurationSection config) {
 		profiles = new HashMap<>();
@@ -22,6 +22,7 @@ public class KillStreaks {
 			profile.kills = section.getInt("kills");
 			profile.deaths = section.getInt("deaths");
 		}
+		sort();
 	}
 
 	public static void save(ConfigurationSection config) {
@@ -31,6 +32,18 @@ public class KillStreaks {
 			section.set("kills", entry.getValue().kills);
 			section.set("deaths", entry.getValue().deaths);
 		}
+	}
+
+	public static void sort() {
+		sortedProfiles =
+				profiles.entrySet().stream().
+						sorted(Map.Entry.comparingByValue()).
+						collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue,
+								(e1, e2) -> e1, LinkedHashMap::new));
+	}
+
+	public static Set<Map.Entry<UUID, KsProfile>> sortedProfiles() {
+		return sortedProfiles.entrySet();
 	}
 
 	public static void addKill(OfflinePlayer player) {
@@ -47,10 +60,7 @@ public class KillStreaks {
 
 	public static KsProfile get(UUID uuid) {
 		checkState();
-		KsProfile profile = profiles.get(uuid);
-		if (profile == null)
-			profiles.put(uuid, (profile = new KsProfile()));
-		return profile;
+		return profiles.computeIfAbsent(uuid, k -> new KsProfile());
 	}
 
 	private static void checkState() {
@@ -58,7 +68,7 @@ public class KillStreaks {
 			throw new IllegalStateException("KillStreaks module has not been loaded !");
 	}
 
-	public static class KsProfile {
+	public static class KsProfile implements Comparable<KsProfile> {
 		int kills;
 		int deaths;
 
@@ -83,6 +93,11 @@ public class KillStreaks {
 				}
 			}
 			return ratio;
+		}
+
+		@Override
+		public int compareTo(KsProfile that) {
+			return that.kills - this.kills;
 		}
 	}
 }

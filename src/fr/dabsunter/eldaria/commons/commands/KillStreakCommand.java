@@ -39,7 +39,7 @@ public class KillStreakCommand extends AbstractCommand {
 		}
 		KillStreaks.KsProfile profile = KillStreaks.get(player);
 
-		for (String line : plugin.getConfig().getStringList("kill-streak-format"))
+		for (String line : plugin.getConfig().getStringList("kill-streak.stats-format"))
 			sender.sendMessage(format(line, player, profile));
 
 		return true;

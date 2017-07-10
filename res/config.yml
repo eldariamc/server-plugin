@@ -38,8 +38,12 @@ repair-orb:
   period: 100
   repair: 50
 
-kill-streak-format:
-  - === Stats de {PLAYER} ===
-  - Kills : {KILLS}
-  - Morts : {DEATHS}
-  - Ratio : {RATIO}
+kill-streak:
+  stats-format:
+    - "=== Stats de {PLAYER} ==="
+    - "Kills : {KILLS}"
+    - "Morts : {DEATHS}"
+    - "Ratio : {RATIO}"
+  top-head-format: "=== TOP ==="
+  top-body-format: "#{RANK} - {PLAYER} - {KILLS} / {DEATHS} / {RATIO}"
+  top-foot-format: "==========="

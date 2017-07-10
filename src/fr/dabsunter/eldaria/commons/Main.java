@@ -9,6 +9,7 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.scheduler.BukkitRunnable;
 
 import java.io.File;
 import java.io.IOException;
@@ -36,6 +37,12 @@ public class Main extends JavaPlugin {
 		getServer().getScheduler().runTaskTimer(this, new ExplorationBootsRunnable(this), 10L, 10L);
 		getServer().getScheduler().runTaskTimer(this, new FullEldariumRunnable(this), 10L, 10L);
 		new RepairOrbRunnable(this, getConfig().getConfigurationSection("repair-orb")).setup();
+		new BukkitRunnable() {
+			@Override
+			public void run() {
+				KillStreaks.sort();
+			}
+		}.runTaskTimerAsynchronously(this, 200L, 200L);
 
 		getCommand("newsset").setExecutor(new NewsSetCommand(this));
 		getCommand("mutechat").setExecutor(new MuteChatCommand(this));
@@ -43,6 +50,7 @@ public class Main extends JavaPlugin {
 		getCommand("announcebar").setExecutor(new AnnounceBarCommand(this));
 		getCommand("bossbar").setExecutor(new BossBarCommand(this));
 		getCommand("killstreak").setExecutor(new KillStreakCommand(this));
+		getCommand("topkillstreak").setExecutor(new TopKillStreakCommand(this));
 
 		new CustomPacketHandler(this).register();
 
@@ -87,6 +95,12 @@ public class Main extends JavaPlugin {
 	public void reloadKsConfig() {
 		if (ksConfigFile == null) {
 			ksConfigFile = new File(getDataFolder(), "kill-streaks.yml");
+			if (!ksConfigFile.exists())
+				try {
+					ksConfigFile.createNewFile();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
 		}
 		ksConfig = YamlConfiguration.loadConfiguration(ksConfigFile);
 	}

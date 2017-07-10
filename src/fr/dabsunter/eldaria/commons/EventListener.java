@@ -1,5 +1,6 @@
 package fr.dabsunter.eldaria.commons;
 
+import com.massivecraft.factions.entity.MPlayer;
 import fr.dabsunter.eldaria.commons.modules.KillStreaks;
 import fr.dabsunter.eldaria.commons.modules.LuckyOre;
 import fr.dabsunter.eldaria.commons.modules.UnclaimFinder;
@@ -7,6 +8,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.Block;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -25,6 +27,7 @@ import org.bukkit.potion.PotionEffectType;
 
 import java.util.Random;
 
+import static fr.dabsunter.eldaria.commons.Utils.hasSomething;
 import static fr.dabsunter.eldaria.commons.Utils.randInRange;
 
 /**
@@ -107,8 +110,11 @@ public class EventListener implements Listener {
 		Player killed = event.getEntity();
 		KillStreaks.addDeath(killed);
 		Player killer = killed.getKiller();
-		if (killer != null)
-			KillStreaks.addKill(killer);
+		if (killer != null && hasSomething((Object[]) killed.getInventory().getArmorContents())) {
+			MPlayer mKilled = MPlayer.get(killed);
+			if (mKilled.getPower() >= 0)
+				KillStreaks.addKill(killer);
+		}
 	}
 
 	@EventHandler
@@ -156,15 +162,18 @@ public class EventListener implements Listener {
 	@SuppressWarnings({"deprecation"})
 	@EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
 	public void onBlockBreak(BlockBreakEvent event) {
-		Block block = event.getBlock();
-		switch (block.getType()) {
-			case LUCKY_ORE:
-				block.setTypeId(LuckyOre.pick().getId(), false);
-				event.setExpToDrop(block.getExpDrop(event.getPlayer()));
-				break;
-			case XP_ORE:
-				event.setExpToDrop(randInRange(XP_RAND, 24, 48));
-				break;
+		ItemStack stack = event.getPlayer().getItemInHand();
+		if (stack != null && !stack.containsEnchantment(Enchantment.SILK_TOUCH)) {
+			Block block = event.getBlock();
+			switch (block.getType()) {
+				case LUCKY_ORE:
+					block.setTypeId(LuckyOre.pick().getId(), false);
+					event.setExpToDrop(block.getExpDrop(event.getPlayer()));
+					break;
+				case XP_ORE:
+					event.setExpToDrop(randInRange(XP_RAND, 24, 48));
+					break;
+			}
 		}
 	}
 }
