@@ -2,6 +2,7 @@ package fr.dabsunter.eldaria.commons.modules;
 
 import org.bukkit.OfflinePlayer;
 import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.configuration.file.FileConfiguration;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -14,7 +15,7 @@ public class KillStreaks {
 	private static HashMap<UUID, KsProfile> profiles;
 	private static LinkedHashMap<UUID, KsProfile> sortedProfiles;
 
-	public static void load(ConfigurationSection config) {
+	public static void load(FileConfiguration config) {
 		profiles = new HashMap<>();
 		for (String key : config.getKeys(false)) {
 			ConfigurationSection section = config.getConfigurationSection(key);
@@ -25,7 +26,7 @@ public class KillStreaks {
 		sort();
 	}
 
-	public static void save(ConfigurationSection config) {
+	public static void save(FileConfiguration config) {
 		checkState();
 		for (Map.Entry<UUID, KsProfile> entry : profiles.entrySet()) {
 			ConfigurationSection section = config.getConfigurationSection(entry.getKey().toString());
