@@ -29,7 +29,10 @@ public class KillStreaks {
 	public static void save(FileConfiguration config) {
 		checkState();
 		for (Map.Entry<UUID, KsProfile> entry : profiles.entrySet()) {
-			ConfigurationSection section = config.getConfigurationSection(entry.getKey().toString());
+			String key = entry.getKey().toString();
+			ConfigurationSection section = config.getConfigurationSection(key);
+			if (section == null)
+				section = config.createSection(key);
 			section.set("kills", entry.getValue().kills);
 			section.set("deaths", entry.getValue().deaths);
 		}
