@@ -5,20 +5,20 @@ import fr.dabsunter.eldaria.commons.modules.KillStreaks;
 import fr.dabsunter.eldaria.commons.modules.LuckyOre;
 import fr.dabsunter.eldaria.commons.modules.UnclaimFinder;
 import org.bukkit.ChatColor;
+import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.enchantments.Enchantment;
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
-import org.bukkit.event.entity.EntityDamageByEntityEvent;
-import org.bukkit.event.entity.EntityExplodeEvent;
-import org.bukkit.event.entity.EntityPortalEvent;
-import org.bukkit.event.entity.PlayerDeathEvent;
+import org.bukkit.event.entity.*;
 import org.bukkit.event.player.*;
 import org.bukkit.event.world.PortalCreateEvent;
 import org.bukkit.inventory.ItemStack;
@@ -92,6 +92,19 @@ public class EventListener implements Listener {
 	}
 
 	@EventHandler
+	public void onEntityDamage(EntityDamageEvent event) {
+		// Plus de morts dans le néant
+		if (event.getCause() == EntityDamageEvent.DamageCause.VOID) {
+			Entity entity = event.getEntity();
+			Location loc = entity.getLocation();
+			loc.setY(loc.getWorld().getHighestBlockYAt(loc) + 1);
+			entity.setFallDistance(0.0F);
+			entity.teleport(loc);
+			event.setCancelled(true);
+		}
+	}
+
+	@EventHandler(priority = EventPriority.HIGHEST)
 	public void onEntityDamageByEntity(EntityDamageByEntityEvent event) {
 		if (!(event.getDamager() instanceof LivingEntity))
 			return;
@@ -102,6 +115,13 @@ public class EventListener implements Listener {
 				event.setDamage(event.getDamage() - level * 2.5);
 				break;
 			}
+		}
+		// Factions - friendly fire du bled
+		if (damager instanceof Player && event.getEntityType() == EntityType.PLAYER) {
+			MPlayer mDamaged = MPlayer.get(event.getEntity());
+			MPlayer mDamager = MPlayer.get(damager);
+			if (mDamaged.getRelationTo(mDamager).isFriend())
+				event.setCancelled(true);
 		}
 	}
 

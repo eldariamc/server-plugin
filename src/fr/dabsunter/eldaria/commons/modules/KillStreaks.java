@@ -92,7 +92,7 @@ public class KillStreaks {
 			String ratio = Float.toString(getRawRatio());
 			for (int i = 0; i < ratio.length(); i++) {
 				if (ratio.charAt(i) == '.') {
-					ratio = ratio.substring(0, Math.min(i + 2, ratio.length()));
+					ratio = ratio.substring(0, Math.min(i + 3, ratio.length()));
 					break;
 				}
 			}
