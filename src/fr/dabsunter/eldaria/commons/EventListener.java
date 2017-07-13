@@ -104,7 +104,7 @@ public class EventListener implements Listener {
 		}
 	}
 
-	@EventHandler(priority = EventPriority.HIGHEST)
+	@EventHandler(priority = EventPriority.HIGH)
 	public void onEntityDamageByEntity(EntityDamageByEntityEvent event) {
 		if (!(event.getDamager() instanceof LivingEntity))
 			return;
