@@ -10,10 +10,7 @@ import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.enchantments.Enchantment;
-import org.bukkit.entity.Entity;
-import org.bukkit.entity.EntityType;
-import org.bukkit.entity.LivingEntity;
-import org.bukkit.entity.Player;
+import org.bukkit.entity.*;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
@@ -24,6 +21,7 @@ import org.bukkit.event.world.PortalCreateEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
+import org.bukkit.projectiles.ProjectileSource;
 
 import java.util.Random;
 
@@ -106,22 +104,31 @@ public class EventListener implements Listener {
 
 	@EventHandler(priority = EventPriority.HIGH)
 	public void onEntityDamageByEntity(EntityDamageByEntityEvent event) {
-		if (!(event.getDamager() instanceof LivingEntity))
-			return;
-		LivingEntity damager = (LivingEntity) event.getDamager();
-		for (PotionEffect effect : damager.getActivePotionEffects()) {
-			if (effect.getType() == PotionEffectType.INCREASE_DAMAGE) {
-				int level = effect.getAmplifier() + 1;
-				event.setDamage(event.getDamage() - level * 2.5);
-				break;
+		Entity attacker = event.getDamager();
+		if (attacker instanceof Projectile) {
+			ProjectileSource thrower = ((Projectile) attacker).getShooter();
+			if (thrower instanceof Entity)
+				attacker = (Entity) thrower;
+		}
+
+		// Factions - friendly fire du bled
+		if (attacker instanceof Player && event.getEntityType() == EntityType.PLAYER) {
+			MPlayer mDamaged = MPlayer.get(event.getEntity());
+			MPlayer mDamager = MPlayer.get(attacker);
+			if (mDamaged.getRelationTo(mDamager).isFriend()) {
+				event.setCancelled(true);
+				return;
 			}
 		}
-		// Factions - friendly fire du bled
-		if (damager instanceof Player && event.getEntityType() == EntityType.PLAYER) {
-			MPlayer mDamaged = MPlayer.get(event.getEntity());
-			MPlayer mDamager = MPlayer.get(damager);
-			if (mDamaged.getRelationTo(mDamager).isFriend())
-				event.setCancelled(true);
+		if (event.getDamager() instanceof LivingEntity){
+			LivingEntity damager = (LivingEntity) event.getDamager();
+			for (PotionEffect effect : damager.getActivePotionEffects()) {
+				if (effect.getType() == PotionEffectType.INCREASE_DAMAGE) {
+					int level = effect.getAmplifier() + 1;
+					event.setDamage(event.getDamage() - level * 2.5);
+					break;
+				}
+			}
 		}
 	}
 
