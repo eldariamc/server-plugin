@@ -47,3 +47,5 @@ kill-streak:
   top-head-format: "=== TOP ==="
   top-body-format: "#{RANK} - {PLAYER} - {KILLS} / {DEATHS} / {RATIO}"
   top-foot-format: "==========="
+
+mob-stands: {}

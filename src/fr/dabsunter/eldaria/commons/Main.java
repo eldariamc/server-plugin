@@ -25,6 +25,9 @@ public class Main extends JavaPlugin {
 	private FileConfiguration ksConfig = null;
 	private File ksConfigFile = null;
 
+	private FileConfiguration msConfig = null;
+	private File msConfigFile = null;
+
 	@Override
 	public void onLoad() {
 		saveDefaultConfig();
@@ -51,11 +54,13 @@ public class Main extends JavaPlugin {
 		getCommand("bossbar").setExecutor(new BossBarCommand(this));
 		getCommand("killstreak").setExecutor(new KillStreakCommand(this));
 		getCommand("topkillstreak").setExecutor(new TopKillStreakCommand(this));
+		getCommand("mobstand").setExecutor(new MobStandCommand());
 
 		new CustomPacketHandler(this).register();
 
 		LuckyOre.load(getConfig().getConfigurationSection("lucky-ore"));
 		KillStreaks.load(getKsConfig());
+		MobStands.load(getMsConfig());
 	}
 
 	@Override
@@ -66,6 +71,8 @@ public class Main extends JavaPlugin {
 
 		KillStreaks.save(getKsConfig());
 		saveKsConfig();
+		MobStands.save(getMsConfig());
+		saveMsConfig();
 	}
 
 	public FileConfiguration getKsConfig() {
@@ -75,10 +82,18 @@ public class Main extends JavaPlugin {
 		return ksConfig;
 	}
 
+	public FileConfiguration getMsConfig() {
+		if (msConfig == null) {
+			reloadKsConfig();
+		}
+		return msConfig;
+	}
+
 	@Override
 	public void reloadConfig() {
 		super.reloadConfig();
 		reloadKsConfig();
+		reloadMsConfig();
 	}
 
 	public void saveKsConfig() {
@@ -103,6 +118,30 @@ public class Main extends JavaPlugin {
 				}
 		}
 		ksConfig = YamlConfiguration.loadConfiguration(ksConfigFile);
+	}
+
+	public void saveMsConfig() {
+		if (msConfig == null || msConfigFile == null) {
+			return;
+		}
+		try {
+			getKsConfig().save(msConfigFile);
+		} catch (IOException ex) {
+			getLogger().log(Level.SEVERE, "Could not save config to " + ksConfigFile, ex);
+		}
+	}
+
+	public void reloadMsConfig() {
+		if (msConfigFile == null) {
+			msConfigFile = new File(getDataFolder(), "mob-stands.yml");
+			if (!msConfigFile.exists())
+				try {
+					msConfigFile.createNewFile();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+		}
+		msConfig = YamlConfiguration.loadConfiguration(msConfigFile);
 	}
 
 	public void sendNews(CommandSender sender) {

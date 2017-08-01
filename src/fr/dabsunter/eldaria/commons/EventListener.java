@@ -3,6 +3,7 @@ package fr.dabsunter.eldaria.commons;
 import com.massivecraft.factions.entity.MPlayer;
 import fr.dabsunter.eldaria.commons.modules.KillStreaks;
 import fr.dabsunter.eldaria.commons.modules.LuckyOre;
+import fr.dabsunter.eldaria.commons.modules.MobStands;
 import fr.dabsunter.eldaria.commons.modules.UnclaimFinder;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -98,6 +99,8 @@ public class EventListener implements Listener {
 			loc.setY(loc.getWorld().getHighestBlockYAt(loc) + 1);
 			entity.setFallDistance(0.0F);
 			entity.teleport(loc);
+			event.setCancelled(true);
+		} else if (MobStands.isMobStand(event.getEntity())) {
 			event.setCancelled(true);
 		}
 	}

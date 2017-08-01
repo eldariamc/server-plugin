@@ -38,7 +38,11 @@ commands:
     description: Affiche le top KillStreak
     aliases: [topks]
     usage: /<command> [joueur]
-
+  mobstand:
+    description: Permet de gérer des mobs sans IA
+    aliases: [mobs]
+    permission: eldaria.mobstand
+    usage: /<command> spawn|remove
 
 permissions:
   eldaria.setnews:
@@ -48,4 +52,6 @@ permissions:
   eldaria.mute.chat:
     default: op
   eldaria.announce:
+    default: op
+  eldaria.mobstand:
     default: op
